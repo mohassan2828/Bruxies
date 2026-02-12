@@ -3,65 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI FORGE CV | PRO ULTIMATE</title>
+    <title>AI FORGE CV | ULTIMATE V3</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
-        :root { --accent: #38bdf8; --dark: #0f172a; --light-bg: #f8fafc; --grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
-        body { font-family: 'Cairo', sans-serif; background: var(--light-bg); margin: 0; color: #334155; }
+        :root { --accent: #38bdf8; --dark: #0f172a; --bg: #f8fafc; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; color: #334155; overflow-x: hidden; }
         
-        /* الهيدر الجديد */
-        .site-header { background: var(--grad); padding: 25px; text-align: center; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-bottom: 4px solid var(--accent); }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; }
-        .logo span { color: var(--accent); text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
-        .tagline { font-size: 14px; opacity: 0.9; font-weight: 400; }
+        /* الهيدر الاحترافي */
+        .site-header { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 30px; text-align: center; color: white; border-bottom: 4px solid var(--accent); }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; letter-spacing: 2px; }
+        .logo span { color: var(--accent); text-shadow: 0 0 15px rgba(56, 189, 248, 0.6); }
+        .tagline { font-size: 15px; opacity: 0.8; margin-top: 5px; }
 
-        .editor-card { max-width: 1000px; margin: 30px auto; background: white; padding: 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        .container { max-width: 1000px; margin: 30px auto; background: white; padding: 40px; border-radius: 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.05); }
         
-        /* قالب العناوين الاحترافي */
-        .section-h { position: relative; font-size: 18px; color: var(--dark); font-weight: 900; margin: 35px 0 20px; padding-right: 15px; display: flex; align-items: center; gap: 12px; }
-        .section-h::before { content: ''; position: absolute; right: 0; height: 100%; width: 5px; background: var(--accent); border-radius: 10px; }
+        .section-h { position: relative; font-size: 20px; color: var(--dark); font-weight: 900; margin: 35px 0 20px; padding-right: 20px; display: flex; align-items: center; gap: 12px; }
+        .section-h::before { content: ''; position: absolute; right: 0; height: 100%; width: 6px; background: var(--accent); border-radius: 10px; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        input, textarea, select { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 15px; font-family: inherit; outline: none; transition: 0.3s; background: #fff; }
-        input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        input, textarea, select { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 15px; font-family: inherit; outline: none; transition: 0.3s; background: #fff; box-sizing: border-box; }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15); }
         
-        /* رسالة التحميل */
-        .download-notice { background: #f0f9ff; border-right: 5px solid var(--accent); padding: 20px; border-radius: 15px; margin-top: 40px; text-align: center; }
-        .download-notice h4 { margin: 0 0 5px; color: #0369a1; }
-        .download-notice p { margin: 0; font-size: 14px; color: #0c4a6e; }
+        .download-notice { background: #f0f9ff; border-right: 5px solid var(--accent); padding: 25px; border-radius: 20px; margin-top: 40px; text-align: center; }
+        .download-notice h4 { margin: 0 0 8px; color: #0369a1; font-size: 18px; }
 
-        .dl-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
-        .btn { border: none; padding: 15px; border-radius: 12px; color: white; cursor: pointer; font-weight: 900; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .dl-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 25px; }
+        .btn { border: none; padding: 16px; border-radius: 15px; color: white; cursor: pointer; font-weight: 900; transition: 0.4s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; }
         .btn-ar { background: #0f172a; } .btn-en { background: #0284c7; } .btn-fr { background: #e11d48; }
-        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        .btn-it { background: #16a34a; } .btn-es { background: #ea580c; } .btn-de { background: #4b5563; }
+        .btn:hover { transform: translateY(-7px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
 
-        /* PDF Styles */
+        /* Loader */
+        #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        .spinner { width: 60px; height: 60px; border: 6px solid #f3f3f3; border-top: 6px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* PDF Layout */
         #pdf-render { position: absolute; top: -20000px; left: -20000px; width: 210mm; min-height: 297mm; display: flex; background: white; }
-        .pdf-side { width: 75mm; background: #1e293b; color: white; padding: 40px 25px; }
-        .pdf-main { flex: 1; padding: 50px 40px; }
-        .pdf-label { font-size: 18px; font-weight: 900; color: #0f172a; border-bottom: 3px solid var(--accent); margin-top: 25px; padding-bottom: 5px; margin-bottom: 12px; }
+        .pdf-side { width: 75mm; background: #1e293b; color: white; padding: 45px 30px; }
+        .pdf-main { flex: 1; padding: 50px 45px; }
+        .pdf-label { font-size: 19px; font-weight: 900; color: #0f172a; border-bottom: 3px solid var(--accent); margin-top: 30px; padding-bottom: 6px; margin-bottom: 15px; }
         .rtl { direction: rtl; text-align: right; } .ltr { direction: ltr; text-align: left; }
-        #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: white; }
     </style>
 </head>
 <body>
 
 <div id="loader">
-    <i class="fas fa-circle-notch fa-spin fa-4x" style="color: var(--accent);"></i>
-    <h2 id="loader-msg" style="margin-top:20px;"></h2>
+    <div class="spinner"></div>
+    <h2 id="loader-msg"></h2>
 </div>
 
 <header class="site-header">
-    <div class="logo"><i class="fas fa-bolt"></i> CV<span>FORGE</span> AI</div>
-    <div class="tagline">أداة ذكية لإنشاء وترجمة السير الذاتية بضغطة زر واحدة</div>
+    <div class="logo"><i class="fas fa-magic"></i> CV<span>FORGE</span> AI</div>
+    <div class="tagline">أنشئ سيرتك الذاتية وترجمها فوراً لـ 6 لغات عالمية</div>
 </header>
 
-<div class="editor-card">
-    <div class="section-h"><i class="fas fa-id-card"></i> البيانات الشخصية</div>
+<div class="container">
+    <div class="section-h"><i class="fas fa-user-circle"></i> البيانات الشخصية الأساسية</div>
     <div class="grid">
         <input type="text" id="inName" placeholder="الاسم الكامل">
         <input type="text" id="inJob" placeholder="المسمى الوظيفي" oninput="runAI()">
@@ -74,103 +76,116 @@
             <option value="تمت التأدية">تمت التأدية</option>
             <option value="إعفاء نهائي">إعفاء نهائي</option>
             <option value="تأجيل">تأجيل</option>
-            <option value="غير مطلوب">غير مطلوب</option>
+            <option value="غير مطلوب">غير مطلوب (إناث)</option>
         </select>
         <input type="file" id="inPhoto">
     </div>
 
-    <div class="section-h"><i class="fas fa-pen-nib"></i> المحتوى والنبذة (AI)</div>
-    <textarea id="inAbout" rows="3" placeholder="نبذة مختصرة عنك..."></textarea>
-    <textarea id="inExp" rows="4" placeholder="الخبرات المهنية السابقة..." style="margin-top:15px;"></textarea>
-    <textarea id="inEdu" rows="3" placeholder="التعليم والشهادات..." style="margin-top:15px;"></textarea>
+    <div class="section-h"><i class="fas fa-briefcase"></i> المسار المهني والتعليم (AI)</div>
+    <textarea id="inAbout" rows="3" placeholder="نبذة تعريفية سريعة..."></textarea>
+    <textarea id="inExp" rows="4" placeholder="الخبرات العملية السابقة..." style="margin-top:15px;"></textarea>
+    <textarea id="inEdu" rows="3" placeholder="التحصيل الدراسي والشهادات..." style="margin-top:15px;"></textarea>
 
-    <div class="section-h"><i class="fas fa-rocket"></i> المهارات واللغات</div>
+    <div class="section-h"><i class="fas fa-lightbulb"></i> المهارات واللغات المكتسبة</div>
     <div class="grid">
-        <textarea id="inSkills" rows="3" placeholder="المهارات الفنية والشخصية..."></textarea>
-        <textarea id="inLang" rows="3" placeholder="اللغات المكتسبة..."></textarea>
+        <textarea id="inSkills" rows="3" placeholder="المهارات الشخصية والتقنية..."></textarea>
+        <textarea id="inLang" rows="3" placeholder="اللغات التي تتقنها..."></textarea>
     </div>
 
     <div class="download-notice">
-        <h4><i class="fas fa-language"></i> جاهز للتحميل؟</h4>
-        <p>يمكنك الآن تحميل سيرتك الذاتية بأي لغة تختارها. سيقوم الذكاء الاصطناعي بترجمة المحتوى بالكامل تلقائياً فور اختيار اللغة.</p>
+        <h4><i class="fas fa-globe-americas"></i> اختر لغة التحميل</h4>
+        <p>سيقوم النظام بترجمة جميع البيانات المدخلة والعناوين إلى اللغة المختارة فوراً عند الضغط على الزر.</p>
     </div>
 
     <div class="dl-section">
-        <button class="btn btn-ar" onclick="startProcess('ar')"><i class="fas fa-download"></i> تحميل بالعربية</button>
-        <button class="btn btn-en" onclick="startProcess('en')"><i class="fas fa-download"></i> English</button>
-        <button class="btn btn-fr" onclick="startProcess('fr')"><i class="fas fa-download"></i> Français</button>
-        <button class="btn btn-it" onclick="startProcess('it')"><i class="fas fa-download"></i> Italiano</button>
-        <button class="btn btn-es" onclick="startProcess('es')"><i class="fas fa-download"></i> Español</button>
-        <button class="btn btn-de" onclick="startProcess('de')"><i class="fas fa-download"></i> Deutsch</button>
+        <button class="btn btn-ar" onclick="startProcess('ar')">🇸🇦 تحميل بالعربية</button>
+        <button class="btn btn-en" onclick="startProcess('en')">🇺🇸 English</button>
+        <button class="btn btn-fr" onclick="startProcess('fr')">🇫🇷 Français</button>
+        <button class="btn btn-it" onclick="startProcess('it')">🇮🇹 Italiano</button>
+        <button class="btn btn-es" onclick="startProcess('es')">🇪🇸 Español</button>
+        <button class="btn btn-de" onclick="startProcess('de')">🇩🇪 Deutsch</button>
     </div>
 </div>
 
 <div id="pdf-render">
     <div class="pdf-side">
-        <div style="width:130px; height:130px; border-radius:15px; border:4px solid var(--accent); margin:0 auto 25px; overflow:hidden; background:#334155;">
+        <div style="width:140px; height:140px; border-radius:20px; border:4px solid var(--accent); margin:0 auto 30px; overflow:hidden; background:#334155;">
             <img id="outPhoto" style="width:100%; height:100%; object-fit:cover;">
         </div>
-        <div style="color:var(--accent); font-weight:900; margin-top:20px; border-bottom:1px solid #444;" id="l-contact">اتصال</div>
-        <div style="font-size:12px; margin-top:10px;" id="outPhone"></div>
-        <div style="font-size:12px; margin-top:5px;" id="outEmail"></div>
-        <div style="font-size:12px; margin-top:5px;" id="outAddress"></div>
+        <div style="color:var(--accent); font-weight:900; margin-top:20px; border-bottom:1px solid #444;" id="l-contact">تواصل</div>
+        <div style="font-size:13px; margin-top:12px;" id="outPhone"></div>
+        <div style="font-size:13px; margin-top:6px;" id="outEmail"></div>
+        <div style="font-size:13px; margin-top:6px;" id="outAddress"></div>
         
-        <div style="color:var(--accent); font-weight:900; margin-top:30px; border-bottom:1px solid #444;" id="l-personal">بيانات إضافية</div>
-        <div style="font-size:12px; margin-top:10px;"><b id="l-birth">الميلاد:</b> <span id="outBirth"></span></div>
-        <div style="font-size:12px; margin-top:5px;"><b id="l-mili">التجنيد:</b> <span id="outMilitary"></span></div>
+        <div style="color:var(--accent); font-weight:900; margin-top:35px; border-bottom:1px solid #444;" id="l-personal">بيانات</div>
+        <div style="font-size:13px; margin-top:12px;"><b id="l-birth">الميلاد:</b> <span id="outBirth"></span></div>
+        <div style="font-size:13px; margin-top:6px;"><b id="l-mili">التجنيد:</b> <span id="outMilitary"></span></div>
     </div>
     <div class="pdf-main">
-        <h1 id="outName" style="margin:0; font-size:38px; color: #0f172a;"></h1>
-        <h3 id="outJob" style="color:var(--accent); margin:5px 0 30px;"></h3>
-        <div class="pdf-label" id="l-about">النبذة</div>
-        <div id="outAbout" style="font-size:12.5px; line-height:1.7;"></div>
-        <div class="pdf-label" id="l-exp">الخبرة</div>
-        <div id="outExp" style="font-size:12.5px; line-height:1.7; white-space:pre-line;"></div>
+        <h1 id="outName" style="margin:0; font-size:42px; color: #0f172a;"></h1>
+        <h3 id="outJob" style="color:var(--accent); margin:8px 0 35px; font-weight:700;"></h3>
+        <div class="pdf-label" id="l-about">الملف الشخصي</div>
+        <div id="outAbout" style="font-size:13px; line-height:1.7;"></div>
+        <div class="pdf-label" id="l-exp">الخبرة العملية</div>
+        <div id="outExp" style="font-size:13px; line-height:1.7; white-space:pre-line;"></div>
         <div class="pdf-label" id="l-edu">التعليم</div>
-        <div id="outEdu" style="font-size:12.5px; line-height:1.7; white-space:pre-line;"></div>
+        <div id="outEdu" style="font-size:13px; line-height:1.7; white-space:pre-line;"></div>
         <div class="pdf-label" id="l-skills">المهارات</div>
-        <div id="outSkills" style="font-size:12.5px; line-height:1.7;"></div>
+        <div id="outSkills" style="font-size:13px; line-height:1.7;"></div>
         <div class="pdf-label" id="l-lang">اللغات</div>
-        <div id="outLang" style="font-size:12.5px; line-height:1.7;"></div>
+        <div id="outLang" style="font-size:13px; line-height:1.7;"></div>
     </div>
 </div>
 
 <script>
     const transMap = {
-        ar: { contact: "اتصال", personal: "بيانات إضافية", birth: "الميلاد", mili: "التجنيد", about: "النبذة المهنية", exp: "الخبرة المهنية", edu: "التعليم والشهادات", skills: "المهارات", lang: "اللغات", wait: "جاري الترجمة والتحميل..." },
-        en: { contact: "CONTACT", personal: "PERSONAL INFO", birth: "Birth", mili: "Military", about: "SUMMARY", exp: "EXPERIENCE", edu: "EDUCATION", skills: "SKILLS", lang: "LANGUAGES", wait: "Translating & Downloading..." }
+        ar: { contact: "تواصل", personal: "بيانات شخصية", birth: "الميلاد", mili: "التجنيد", about: "الملف الشخصي", exp: "الخبرة العملية", edu: "التعليم والشهادات", skills: "المهارات", lang: "اللغات", wait: "جاري معالجة البيانات والتحميل..." },
+        en: { contact: "CONTACT", personal: "PERSONAL INFO", birth: "Birth", mili: "Military", about: "PROFILE", exp: "EXPERIENCE", edu: "EDUCATION", skills: "SKILLS", lang: "LANGUAGES", wait: "Translating & Downloading..." },
+        fr: { contact: "CONTACT", personal: "INFOS", birth: "Naissance", mili: "Service", about: "PROFIL", exp: "EXPÉRIENCE", edu: "ÉDUCATION", skills: "COMPÉTENCES", lang: "LANGUES", wait: "Traduction en cours..." },
+        it: { contact: "CONTATTI", personal: "INFO", birth: "Nascita", mili: "Militare", about: "PROFILO", exp: "ESPERIENZA", edu: "ISTRUZIONE", skills: "ABILITÀ", lang: "LINGUE", wait: "Traduzione..." },
+        es: { contact: "CONTACTO", personal: "DATOS", birth: "Nacimiento", mili: "Militar", about: "PERFIL", exp: "EXPERIENCIA", edu: "EDUCACIÓN", skills: "HABILIDADES", lang: "IDIOMAS", wait: "Traduciendo..." },
+        de: { contact: "KONTAKT", personal: "INFOS", birth: "Geburt", mili: "Militär", about: "PROFIL", exp: "ERFAHRUNG", edu: "BILDUNG", skills: "FÄHIGKEITEN", lang: "SPRACHEN", wait: "Wird übersetzt..." }
     };
 
     function runAI() {
         const job = document.getElementById('inJob').value || "خبير";
-        document.getElementById('inAbout').value = `أنا ${job} أتمتع بمهارات قيادية وقدرة على حل المشكلات.\nأسعى للمساهمة في نجاح المؤسسة من خلال خبراتي المتنوعة.`;
-        document.getElementById('inExp').value = `• العمل كـ ${job} لسنوات عديدة.\n• تحقيق أهداف القسم وتطوير الأداء العام.`;
-        document.getElementById('inEdu').value = "• درجة بكالوريوس في التخصص ذو الصلة.\n• شهادات إضافية في مجالات المهارات التقنية.";
-        document.getElementById('inSkills').value = "العمل الجماعي، القيادة، إدارة الوقت";
-        document.getElementById('inLang').value = "العربية، الإنجليزية";
+        document.getElementById('inAbout').value = `بصفتي ${job}، أسعى لتقديم أفضل النتائج وتطوير العمل بمهنية عالية.\nأمتلك شغفاً كبيراً بالابتكار والتعلم المستمر في مجالي.`;
+        document.getElementById('inExp').value = `• العمل كـ ${job} وإدارة المشاريع بكفاءة.\n• تطوير استراتيجيات العمل وتحسين الأداء العام للمؤسسة.`;
+        document.getElementById('inEdu').value = "• حاصل على درجة علمية في التخصص المناسب.\n• دورات تدريبية متقدمة في المهارات القيادية.";
+        document.getElementById('inSkills').value = "القيادة، إدارة الوقت، حل المشكلات المعقدة";
+        document.getElementById('inLang').value = "اللغة العربية (الأم)، اللغة الإنجليزية (ممتاز)";
     }
 
+    // محرك ترجمة مطور وأكثر استقراراً
     async function translateText(text, target) {
         if (!text || target === 'ar') return text;
         try {
-            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
             const response = await fetch(url);
+            if (!response.ok) throw new Error();
             const data = await response.json();
             return data[0].map(item => item[0]).join('');
-        } catch { return text; }
+        } catch {
+            return text; // في حال فشل الترجمة يرجع النص الأصلي بدلاً من الخطأ
+        }
     }
 
     async function startProcess(lang) {
-        document.getElementById('loader').style.display = 'flex';
+        const loader = document.getElementById('loader');
         const ui = transMap[lang] || transMap['en'];
+        loader.style.display = 'flex';
         document.getElementById('loader-msg').innerText = ui.wait;
 
         const ids = ['Name', 'Job', 'About', 'Exp', 'Edu', 'Skills', 'Lang', 'Address', 'Military'];
+        
+        // تنفيذ الترجمة بشكل متسلسل لضمان عدم حدوث Block
         for (const id of ids) {
-            const translated = await translateText(document.getElementById('in' + id).value, lang);
-            document.getElementById('out' + id).innerText = translated;
+            const val = document.getElementById('in' + id).value;
+            const res = await translateText(val, lang);
+            document.getElementById('out' + id).innerText = res;
         }
 
+        // تحديث العناوين
         document.getElementById('l-contact').innerText = ui.contact;
         document.getElementById('l-personal').innerText = ui.personal;
         document.getElementById('l-birth').innerText = ui.birth + ":";
@@ -188,13 +203,14 @@
         const wrap = document.getElementById('pdf-render');
         wrap.className = (lang === 'ar') ? 'rtl' : 'ltr';
 
+        // مهلة بسيطة لضمان الرندر
         setTimeout(async () => {
             const canvas = await html2canvas(wrap, { scale: 3, useCORS: true });
             const doc = new jspdf.jsPDF('p', 'mm', 'a4');
             doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
             doc.save(`CV_${lang}.pdf`);
-            document.getElementById('loader').style.display = 'none';
-        }, 800);
+            loader.style.display = 'none';
+        }, 1200);
     }
 
     document.getElementById('inPhoto').onchange = e => {
