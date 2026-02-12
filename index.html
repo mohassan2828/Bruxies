@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV FORGE AI | Local Engine</title>
+    <title>Cv Forge | Professional Edition</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Almarai:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -14,124 +14,150 @@
     <style>
         :root { 
             --primary: #0f172a; --accent: #38bdf8; --bg-grad: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            --card-bg: rgba(255, 255, 255, 0.98); --text-main: #1e293b; --border: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.95); --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0;
         }
         body.dark-mode {
-            --primary: #f8fafc; --bg-grad: #020617; --card-bg: #1e293b; --text-main: #f1f5f9; --border: #334155;
+            --primary: #f8fafc; --accent: #38bdf8; --bg-grad: #020617;
+            --card-bg: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: #334155;
         }
-        body { margin: 0; background: var(--bg-grad); font-family: 'Cairo', sans-serif; color: var(--text-main); }
-        header { padding: 15px 30px; background: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .main-card { max-width: 850px; margin: 30px auto; background: var(--card-bg); border-radius: 20px; padding: 30px; border: 1px solid var(--border); }
-        .ai-btn { 
-            background: linear-gradient(45deg, #0ea5e9, #6366f1); color: white; border: none; 
-            padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 12px;
-        }
-        input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; margin-top: 5px; background: white; }
-        .btn-download { width: 100%; padding: 15px; background: #38bdf8; color: #0f172a; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 20px; }
 
-        /* PDF Preview */
-        #pdf-render-zone { position: absolute; top: -10000px; }
+        * { box-sizing: border-box; transition: 0.3s ease; }
+        body { margin: 0; background: var(--bg-grad); font-family: 'Cairo', sans-serif; color: var(--text-main); min-height: 100vh; }
+
+        header { 
+            padding: 15px 30px; background: var(--card-bg); position: sticky; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .logo-box { font-family: 'Almarai'; font-size: 22px; font-weight: 900; }
+        .logo-box span { color: var(--accent); }
+
+        .app-wrapper { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .main-card { background: var(--card-bg); border-radius: 24px; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+        
+        .section-label { font-size: 13px; font-weight: 900; color: var(--accent); margin: 30px 0 20px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+        .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        input, textarea { width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: transparent; color: var(--text-main); font-family: inherit; margin-top: 8px; }
+        input:focus { border-color: var(--accent); outline: none; }
+
+        .ai-status { font-size: 11px; color: var(--success); font-weight: bold; margin-top: 5px; display: none; }
+
+        .btn-download { width: 100%; padding: 20px; background: var(--accent); color: #0f172a; border: none; border-radius: 18px; font-size: 18px; font-weight: 900; cursor: pointer; margin-top: 30px; }
+
+        /* --- PDF Design (Original Theme) --- */
+        #pdf-render-zone { position: absolute; top: -20000px; }
         .pdf-page { width: 210mm; height: 297mm; background: white; display: flex; direction: rtl; }
-        .sidebar { width: 75mm; background: #1e293b; color: white; padding: 30px 20px; }
-        .main-content { flex: 1; padding: 40px; }
-        .pdf-section-h { font-size: 18px; font-weight: 900; color: #0f172a; border-right: 4px solid #38bdf8; padding-right: 10px; margin: 20px 0 10px; }
-        .pdf-body { font-size: 12px; color: #334155; line-height: 1.6; white-space: pre-line; }
+        .pdf-sidebar { width: 75mm; background: #1e293b; color: white; padding: 40px 25px; }
+        .pdf-main { flex: 1; padding: 50px 40px; color: #1e293b; }
+        .pdf-photo { width: 130px; height: 130px; border-radius: 20px; background: #334155; margin: 0 auto 30px; border: 4px solid #38bdf8; overflow: hidden; }
+        .pdf-side-h { font-size: 16px; font-weight: 900; color: #38bdf8; margin-top: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; margin-bottom: 15px; }
+        .pdf-side-text { font-size: 11px; margin-bottom: 10px; color: #cbd5e1; display: flex; align-items: center; gap: 8px; }
+        .pdf-name { font-size: 36px; font-weight: 900; margin: 0; color: #0f172a; }
+        .pdf-job { font-size: 18px; color: #38bdf8; font-weight: 700; margin-bottom: 30px; }
+        .pdf-section-h { font-size: 18px; font-weight: 900; color: #0f172a; border-right: 5px solid #38bdf8; padding-right: 12px; margin: 35px 0 15px; }
+        .pdf-body-text { font-size: 13px; line-height: 1.7; white-space: pre-line; color: #334155; }
     </style>
 </head>
 <body>
 
-<header>
-    <div style="font-weight: 900; font-size: 20px;"><i class="fas fa-magic"></i> CV FORGE AI</div>
-    <button onclick="document.body.classList.toggle('dark-mode')" class="ai-btn">تغيير الوضع</button>
-</header>
+    <header>
+        <div class="logo-box">CV <span>FORGE</span></div>
+        <button onclick="document.body.classList.toggle('dark-mode')" style="background:none; border:none; cursor:pointer; font-size:20px; color:var(--accent)"><i class="fas fa-moon"></i></button>
+    </header>
 
-<div class="app-wrapper">
-    <div class="main-card">
-        <h3 style="margin-top:0">المعلومات الأساسية</h3>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
-            <input type="text" id="inName" placeholder="الاسم الكامل">
-            <input type="text" id="inJob" placeholder="المسمى الوظيفي (مثال: مدير مطعم)">
-        </div>
-        
-        <div style="margin-top:20px">
-            <div style="display:flex; justify-content:space-between; align-items:center">
-                <label>النبذة الشخصية (AI)</label>
-                <button onclick="improveLocal()" class="ai-btn"><i class="fas fa-sparkles"></i> تحسين بالذكاء الاصطناعي</button>
+    <div class="app-wrapper">
+        <div class="main-card">
+            <div class="section-label">المعلومات الشخصية</div>
+            <div class="grid">
+                <div><label>الاسم الكامل</label><input type="text" id="inName" placeholder="محمد حسن صالح"></div>
+                <div><label>المسمى الوظيفي</label><input type="text" id="inJob" oninput="autoAI()" placeholder="مثال: مدير مطعم"></div>
             </div>
-            <textarea id="inAbout" rows="6" placeholder="اكتب مسمى وظيفتك فوق ثم اضغط تحسين..."></textarea>
-        </div>
+            <div class="grid" style="margin-top:15px">
+                <div><label>تاريخ الميلاد</label><input type="text" id="inBirth" placeholder="12-16-1995"></div>
+                <div><label>العنوان</label><input type="text" id="inAddress" placeholder="الإسكندرية"></div>
+            </div>
 
-        <button class="btn-download" onclick="generatePDF()">تحميل السيرة الذاتية PDF</button>
-    </div>
-</div>
+            <div class="section-label">النبذة والخبرات <span id="aiStatus" class="ai-status">✨ تم التحسين تلقائياً</span></div>
+            <div>
+                <label>عني (النبذة الشخصية)</label>
+                <textarea id="inAbout" rows="5" placeholder="اكتب وظيفتك وسأقوم بصياغة النبذة لك..."></textarea>
+            </div>
+            <div style="margin-top:15px">
+                <label>الخبرات المهنية</label>
+                <textarea id="inExp" rows="5" placeholder="اكتب خبرتك هنا..."></textarea>
+            </div>
 
-<div id="pdf-render-zone">
-    <div id="pdf-doc" class="pdf-page">
-        <div class="sidebar">
-            <div style="width:120px; height:120px; background:#334155; border-radius:15px; margin:0 auto"></div>
-            <h3 style="color:#38bdf8; margin-top:30px">تواصل معي</h3>
-            <p id="outContact" style="font-size:11px">عنوان السكن<br>0123456789</p>
-        </div>
-        <div class="main-content">
-            <h1 id="outName" style="margin:0; color:#0f172a"></h1>
-            <h3 id="outJob" style="color:#38bdf8; margin-top:5px"></h3>
-            <div class="pdf-section-h">النبذة الشخصية</div>
-            <p id="outAbout" class="pdf-body"></p>
+            <button class="btn-download" onclick="generatePDF()"><i class="fas fa-file-pdf"></i> تحميل السيرة الذاتية PDF</button>
         </div>
     </div>
-</div>
 
-<script>
-    // قاعدة بيانات الجمل الاحترافية (كلام كتير ومنسق) [cite: 2026-02-12]
-    const aiData = {
-        "مدير مطعم": `مدير مطعم محترف بخبرة واسعة في إدارة العمليات اليومية وضمان تقديم أعلى مستويات الخدمة والجودة.
-• خبير في قيادة الفرق وتدريب الموظفين لتحقيق أقصى درجات الكفاءة التشغيلية.
-• متمكن من إدارة التكاليف، مراقبة المخزون، وزيادة الأرباح من خلال استراتيجيات تسويقية مبتكرة.
-• ملتزم تماماً بمعايير الصحة والسلامة المهنية العالمية لضمان تجربة مميزة للعملاء.`,
-        
-        "مدير": `قائد إداري محنك يتمتع برؤية استراتيجية وقدرة عالية على توجيه الفرق نحو تحقيق الأهداف الصعبة.
-• مهارات استثنائية في التخطيط، التنظيم، واتخاذ القرارات المبنية على تحليل البيانات.
-• سجل حافل في تطوير الهياكل الإدارية وتحسين بيئة العمل لرفع معدلات الإنتاجية.
-• بارع في إدارة الأزمات وحل المشكلات المعقدة بأساليب مبتكرة وفعالة.`,
+    <div id="pdf-render-zone">
+        <div id="pdf-doc" class="pdf-page">
+            <div class="pdf-sidebar">
+                <div class="pdf-photo"><img id="outPhoto" style="width:100%; height:100%; object-fit:cover;"></div>
+                <div class="pdf-side-h">CONTACT</div>
+                <div class="pdf-side-text"><i class="fas fa-phone"></i> 01200505183</div>
+                <div class="pdf-side-text"><i class="fas fa-envelope"></i> mohmed@gmail.com</div>
+                <div class="pdf-side-text"><i class="fas fa-map-marker-alt"></i> <span id="pdfAddress"></span></div>
+                <div class="pdf-side-text"><i class="fas fa-calendar"></i> <span id="pdfBirth"></span></div>
+                
+                <div class="pdf-side-h">SKILLS</div>
+                <div class="pdf-body-text" style="color:white; font-size:11px">إدارة الفرق، تنظيم الجودة، التعامل مع العملاء.</div>
+            </div>
+            <div class="pdf-main">
+                <h1 id="pdfName" class="pdf-name"></h1>
+                <p id="pdfJob" class="pdf-job"></p>
+                
+                <div class="pdf-section-h">PROFESSIONAL SUMMARY</div>
+                <div id="pdfAbout" class="pdf-body-text"></div>
+                
+                <div class="pdf-section-h">WORK EXPERIENCE</div>
+                <div id="pdfExp" class="pdf-body-text"></div>
+            </div>
+        </div>
+    </div>
 
-        "مبيعات": `متخصص مبيعات طموح يتمتع بمهارات تفاوض وإقناع عالية وقدرة على بناء علاقات طويلة الأمد مع العملاء.
-• خبير في تحليل اتجاهات السوق وتحديد الفرص البيعية لزيادة الحصة السوقية للشركة.
-• متمكن من إغلاق الصفقات الكبرى وإدارة دورة المبيعات بالكامل من الاستقطاب وحتى خدمات ما بعد البيع.
-• حاصل على جوائز في تحقيق وتجاوز المستهدفات البيعية السنوية بنجاح.`
-    };
+    <script>
+        // قاعدة بيانات "الذكاء المحلي" - تحويل تلقائي [cite: 2026-02-12]
+        const aiLibrary = {
+            "مدير مطعم": {
+                about: "مدير مطعم محترف بخبرة واسعة في إدارة العمليات اليومية وضمان تقديم أعلى مستويات الخدمة والجودة.\nخبير في قيادة الفرق وتدريب الموظفين لتحقيق الكفاءة التشغيلية، ومتمكن من إدارة التكاليف لزيادة الأرباح.",
+                exp: "• إدارة طاقم العمل وتوزيع المهام اليومية.\n• مراقبة جودة الأغذية والالتزام بمعايير الصحة.\n• التعامل مع شكاوى العملاء وحلها باحترافية."
+            },
+            "محاسب": {
+                about: "محاسب مالي دقيق في مراجعة الحسابات وإعداد التقارير المالية والضريبية بدقة عالية.\nأمتلك مهارات تحليلية قوية وقدرة على إدارة التدفقات النقدية وضمان الامتثال للمعايير الدولية.",
+                exp: "• تسجيل القيود اليومية بدقة.\n• إعداد القوائم المالية الشهرية والسنوية.\n• مراجعة الحسابات البنكية والتسويات."
+            }
+        };
 
-    function improveLocal() {
-        const job = document.getElementById('inJob').value.trim();
-        const aboutBox = document.getElementById('inAbout');
-        
-        let found = false;
-        for (let key in aiData) {
-            if (job.includes(key)) {
-                aboutBox.value = aiData[key];
-                found = true;
-                break;
+        function autoAI() {
+            const jobTitle = document.getElementById('inJob').value.trim();
+            const aboutBox = document.getElementById('inAbout');
+            const expBox = document.getElementById('inExp');
+            const status = document.getElementById('aiStatus');
+
+            if (aiLibrary[jobTitle]) {
+                aboutBox.value = aiLibrary[jobTitle].about;
+                expBox.value = aiLibrary[jobTitle].exp;
+                status.style.display = "inline";
+                setTimeout(() => status.style.display = "none", 2000);
             }
         }
 
-        if (!found) {
-            alert("يرجى كتابة وظيفتك بدقة (مثال: مدير مطعم) ليتمكن الذكاء الاصطناعي من صياغة النبذة.");
-        } else {
-            aboutBox.style.background = "#f0fdf4";
-            setTimeout(() => aboutBox.style.background = "white", 1000);
+        async function generatePDF() {
+            document.getElementById('pdfName').innerText = document.getElementById('inName').value || "محمد حسن صالح";
+            document.getElementById('pdfJob').innerText = document.getElementById('inJob').value || "مدير مطعم";
+            document.getElementById('pdfAbout').innerText = document.getElementById('inAbout').value;
+            document.getElementById('pdfExp').innerText = document.getElementById('inExp').value;
+            document.getElementById('pdfAddress').innerText = document.getElementById('inAddress').value || "الإسكندرية";
+            document.getElementById('pdfBirth').innerText = document.getElementById('inBirth').value || "12-16-1995";
+
+            const canvas = await html2canvas(document.getElementById('pdf-doc'), { scale: 3 });
+            const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
+            pdf.save("CV_Professional.pdf");
         }
-    }
-
-    async function generatePDF() {
-        document.getElementById('outName').innerText = document.getElementById('inName').value;
-        document.getElementById('outJob').innerText = document.getElementById('inJob').value;
-        document.getElementById('outAbout').innerText = document.getElementById('inAbout').value;
-
-        const canvas = await html2canvas(document.getElementById('pdf-doc'), { scale: 2 });
-        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
-        pdf.save("CV_Professional.pdf");
-    }
-</script>
-
+    </script>
 </body>
 </html>
