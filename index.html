@@ -3,58 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI FORGE CV | PRO FIXED</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>AI FORGE CV | PRO ULTIMATE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
-        :root { --accent: #38bdf8; --dark: #1e293b; --light-bg: #f1f5f9; }
-        body { font-family: 'Cairo', sans-serif; background: var(--light-bg); margin: 0; padding: 20px; color: #334155; }
-        .editor-card { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .section-h { color: var(--accent); font-weight: 900; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
-        input, textarea, select { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: inherit; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--accent); }
+        :root { --accent: #38bdf8; --dark: #0f172a; --light-bg: #f8fafc; --grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+        body { font-family: 'Cairo', sans-serif; background: var(--light-bg); margin: 0; color: #334155; }
         
-        /* أزرار التحميل */
-        .dl-section { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
-        .btn { border: none; padding: 14px; border-radius: 12px; color: white; cursor: pointer; font-weight: 900; font-size: 12px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        /* الهيدر الجديد */
+        .site-header { background: var(--grad); padding: 25px; text-align: center; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-bottom: 4px solid var(--accent); }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; }
+        .logo span { color: var(--accent); text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+        .tagline { font-size: 14px; opacity: 0.9; font-weight: 400; }
+
+        .editor-card { max-width: 1000px; margin: 30px auto; background: white; padding: 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        
+        /* قالب العناوين الاحترافي */
+        .section-h { position: relative; font-size: 18px; color: var(--dark); font-weight: 900; margin: 35px 0 20px; padding-right: 15px; display: flex; align-items: center; gap: 12px; }
+        .section-h::before { content: ''; position: absolute; right: 0; height: 100%; width: 5px; background: var(--accent); border-radius: 10px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        input, textarea, select { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 15px; font-family: inherit; outline: none; transition: 0.3s; background: #fff; }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1); }
+        
+        /* رسالة التحميل */
+        .download-notice { background: #f0f9ff; border-right: 5px solid var(--accent); padding: 20px; border-radius: 15px; margin-top: 40px; text-align: center; }
+        .download-notice h4 { margin: 0 0 5px; color: #0369a1; }
+        .download-notice p { margin: 0; font-size: 14px; color: #0c4a6e; }
+
+        .dl-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
+        .btn { border: none; padding: 15px; border-radius: 12px; color: white; cursor: pointer; font-weight: 900; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-ar { background: #0f172a; } .btn-en { background: #0284c7; } .btn-fr { background: #e11d48; }
-        .btn-it { background: #16a34a; } .btn-es { background: #ea580c; } .btn-de { background: #4b5563; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
 
-        /* منطقة الرندر (PDF) */
-        #pdf-render { position: absolute; top: -20000px; left: -20000px; width: 210mm; min-height: 297mm; display: flex; background: white; box-sizing: border-box; }
-        .pdf-side { width: 75mm; background: var(--dark); color: white; padding: 40px 25px; display: flex; flex-direction: column; }
-        .pdf-main { flex: 1; padding: 50px 40px; background: white; }
-        .pdf-label { font-size: 18px; font-weight: 900; color: var(--dark); border-bottom: 3px solid var(--accent); margin-top: 25px; padding-bottom: 5px; margin-bottom: 12px; }
-        .side-title { color: var(--accent); font-weight: 900; font-size: 14px; margin-top: 25px; margin-bottom: 10px; border-bottom: 1px solid #444; }
-        .side-val { font-size: 12px; margin-bottom: 8px; color: #cbd5e1; line-height: 1.4; }
+        /* PDF Styles */
+        #pdf-render { position: absolute; top: -20000px; left: -20000px; width: 210mm; min-height: 297mm; display: flex; background: white; }
+        .pdf-side { width: 75mm; background: #1e293b; color: white; padding: 40px 25px; }
+        .pdf-main { flex: 1; padding: 50px 40px; }
+        .pdf-label { font-size: 18px; font-weight: 900; color: #0f172a; border-bottom: 3px solid var(--accent); margin-top: 25px; padding-bottom: 5px; margin-bottom: 12px; }
         .rtl { direction: rtl; text-align: right; } .ltr { direction: ltr; text-align: left; }
-
-        #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: white; }
     </style>
 </head>
 <body>
 
 <div id="loader">
-    <i class="fas fa-magic fa-spin fa-4x" style="color: var(--accent); margin-bottom: 20px;"></i>
-    <h2 id="loader-msg">جاري معالجة الـ AI والتحميل...</h2>
+    <i class="fas fa-circle-notch fa-spin fa-4x" style="color: var(--accent);"></i>
+    <h2 id="loader-msg" style="margin-top:20px;"></h2>
 </div>
 
+<header class="site-header">
+    <div class="logo"><i class="fas fa-bolt"></i> CV<span>FORGE</span> AI</div>
+    <div class="tagline">أداة ذكية لإنشاء وترجمة السير الذاتية بضغطة زر واحدة</div>
+</header>
+
 <div class="editor-card">
-    <h2 style="text-align: center; margin-bottom: 30px;"><i class="fas fa-file-invoice"></i> AI FORGE <span style="color: var(--accent);">CV PRO</span></h2>
-    
-    <div class="section-h"><i class="fas fa-user"></i> البيانات الشخصية</div>
+    <div class="section-h"><i class="fas fa-id-card"></i> البيانات الشخصية</div>
     <div class="grid">
         <input type="text" id="inName" placeholder="الاسم الكامل">
         <input type="text" id="inJob" placeholder="المسمى الوظيفي" oninput="runAI()">
         <input type="text" id="inPhone" placeholder="رقم الهاتف">
         <input type="email" id="inEmail" placeholder="البريد الإلكتروني">
         <input type="text" id="inAddress" placeholder="العنوان بالتفصيل">
-        <input type="text" id="inBirth" placeholder="تاريخ الميلاد (مثال: 1995/10/05)">
+        <input type="text" id="inBirth" placeholder="تاريخ الميلاد">
         <select id="inMilitary">
             <option value="">الموقف من التجنيد</option>
             <option value="تمت التأدية">تمت التأدية</option>
@@ -65,57 +79,57 @@
         <input type="file" id="inPhoto">
     </div>
 
-    <div class="section-h"><i class="fas fa-brain"></i> المحتوى المهني (AI)</div>
-    <textarea id="inAbout" rows="3" placeholder="النبذة التعريفية..."></textarea>
-    <textarea id="inExp" rows="4" placeholder="الخبرات المهنية..." style="margin-top:15px;"></textarea>
-    <textarea id="inEdu" rows="3" placeholder="التعليم والكورسات..." style="margin-top:15px;"></textarea>
+    <div class="section-h"><i class="fas fa-pen-nib"></i> المحتوى والنبذة (AI)</div>
+    <textarea id="inAbout" rows="3" placeholder="نبذة مختصرة عنك..."></textarea>
+    <textarea id="inExp" rows="4" placeholder="الخبرات المهنية السابقة..." style="margin-top:15px;"></textarea>
+    <textarea id="inEdu" rows="3" placeholder="التعليم والشهادات..." style="margin-top:15px;"></textarea>
 
-    <div class="section-h"><i class="fas fa-star"></i> المهارات واللغات</div>
+    <div class="section-h"><i class="fas fa-rocket"></i> المهارات واللغات</div>
     <div class="grid">
-        <textarea id="inSkills" rows="3" placeholder="المهارات الشخصية والتقنية..."></textarea>
-        <textarea id="inLang" rows="3" placeholder="اللغات التي تتقنها..."></textarea>
+        <textarea id="inSkills" rows="3" placeholder="المهارات الفنية والشخصية..."></textarea>
+        <textarea id="inLang" rows="3" placeholder="اللغات المكتسبة..."></textarea>
+    </div>
+
+    <div class="download-notice">
+        <h4><i class="fas fa-language"></i> جاهز للتحميل؟</h4>
+        <p>يمكنك الآن تحميل سيرتك الذاتية بأي لغة تختارها. سيقوم الذكاء الاصطناعي بترجمة المحتوى بالكامل تلقائياً فور اختيار اللغة.</p>
     </div>
 
     <div class="dl-section">
-        <button class="btn btn-ar" onclick="startProcess('ar')"><i class="fas fa-file-pdf"></i> العربية</button>
-        <button class="btn btn-en" onclick="startProcess('en')"><i class="fas fa-file-pdf"></i> English</button>
-        <button class="btn btn-fr" onclick="startProcess('fr')"><i class="fas fa-file-pdf"></i> Français</button>
-        <button class="btn btn-it" onclick="startProcess('it')"><i class="fas fa-file-pdf"></i> Italiano</button>
-        <button class="btn btn-es" onclick="startProcess('es')"><i class="fas fa-file-pdf"></i> Español</button>
-        <button class="btn btn-de" onclick="startProcess('de')"><i class="fas fa-file-pdf"></i> Deutsch</button>
+        <button class="btn btn-ar" onclick="startProcess('ar')"><i class="fas fa-download"></i> تحميل بالعربية</button>
+        <button class="btn btn-en" onclick="startProcess('en')"><i class="fas fa-download"></i> English</button>
+        <button class="btn btn-fr" onclick="startProcess('fr')"><i class="fas fa-download"></i> Français</button>
+        <button class="btn btn-it" onclick="startProcess('it')"><i class="fas fa-download"></i> Italiano</button>
+        <button class="btn btn-es" onclick="startProcess('es')"><i class="fas fa-download"></i> Español</button>
+        <button class="btn btn-de" onclick="startProcess('de')"><i class="fas fa-download"></i> Deutsch</button>
     </div>
 </div>
 
 <div id="pdf-render">
     <div class="pdf-side">
-        <div style="width:130px; height:130px; border-radius:20px; border:4px solid var(--accent); margin:0 auto 25px; overflow:hidden; background:#334155;">
+        <div style="width:130px; height:130px; border-radius:15px; border:4px solid var(--accent); margin:0 auto 25px; overflow:hidden; background:#334155;">
             <img id="outPhoto" style="width:100%; height:100%; object-fit:cover;">
         </div>
-        <div class="side-title" id="l-contact">اتصال</div>
-        <div class="side-val" id="outPhone"></div>
-        <div class="side-val" id="outEmail"></div>
-        <div class="side-val" id="outAddress"></div>
+        <div style="color:var(--accent); font-weight:900; margin-top:20px; border-bottom:1px solid #444;" id="l-contact">اتصال</div>
+        <div style="font-size:12px; margin-top:10px;" id="outPhone"></div>
+        <div style="font-size:12px; margin-top:5px;" id="outEmail"></div>
+        <div style="font-size:12px; margin-top:5px;" id="outAddress"></div>
         
-        <div class="side-title" id="l-personal">بيانات إضافية</div>
-        <div class="side-val"><b id="l-birth">الميلاد:</b> <span id="outBirth"></span></div>
-        <div class="side-val"><b id="l-mili">التجنيد:</b> <span id="outMilitary"></span></div>
+        <div style="color:var(--accent); font-weight:900; margin-top:30px; border-bottom:1px solid #444;" id="l-personal">بيانات إضافية</div>
+        <div style="font-size:12px; margin-top:10px;"><b id="l-birth">الميلاد:</b> <span id="outBirth"></span></div>
+        <div style="font-size:12px; margin-top:5px;"><b id="l-mili">التجنيد:</b> <span id="outMilitary"></span></div>
     </div>
     <div class="pdf-main">
         <h1 id="outName" style="margin:0; font-size:38px; color: #0f172a;"></h1>
-        <h3 id="outJob" style="color:var(--accent); margin:5px 0 30px; font-weight:700;"></h3>
-        
-        <div class="pdf-label" id="l-about">النبذة المهنية</div>
+        <h3 id="outJob" style="color:var(--accent); margin:5px 0 30px;"></h3>
+        <div class="pdf-label" id="l-about">النبذة</div>
         <div id="outAbout" style="font-size:12.5px; line-height:1.7;"></div>
-        
-        <div class="pdf-label" id="l-exp">الخبرة العملية</div>
+        <div class="pdf-label" id="l-exp">الخبرة</div>
         <div id="outExp" style="font-size:12.5px; line-height:1.7; white-space:pre-line;"></div>
-
-        <div class="pdf-label" id="l-edu">التعليم والشهادات</div>
+        <div class="pdf-label" id="l-edu">التعليم</div>
         <div id="outEdu" style="font-size:12.5px; line-height:1.7; white-space:pre-line;"></div>
-
         <div class="pdf-label" id="l-skills">المهارات</div>
         <div id="outSkills" style="font-size:12.5px; line-height:1.7;"></div>
-
         <div class="pdf-label" id="l-lang">اللغات</div>
         <div id="outLang" style="font-size:12.5px; line-height:1.7;"></div>
     </div>
@@ -123,21 +137,19 @@
 
 <script>
     const transMap = {
-        ar: { contact: "اتصال", personal: "بيانات شخصية", birth: "الميلاد", mili: "التجنيد", about: "النبذة الشخصية", exp: "الخبرة المهنية", edu: "التعليم والشهادات", skills: "المهارات", lang: "اللغات", wait: "جاري الترجمة والتحميل..." },
-        en: { contact: "CONTACT", personal: "PERSONAL INFO", birth: "Birth", mili: "Military", about: "SUMMARY", exp: "EXPERIENCE", edu: "EDUCATION", skills: "SKILLS", lang: "LANGUAGES", wait: "Translating & Downloading..." },
-        fr: { contact: "CONTACT", personal: "INFOS", birth: "Naissance", mili: "Militaire", about: "RÉSUMÉ", exp: "EXPÉRIENCE", edu: "ÉDUCATION", skills: "COMPÉTENCES", lang: "LANGUES", wait: "Traduction..." }
+        ar: { contact: "اتصال", personal: "بيانات إضافية", birth: "الميلاد", mili: "التجنيد", about: "النبذة المهنية", exp: "الخبرة المهنية", edu: "التعليم والشهادات", skills: "المهارات", lang: "اللغات", wait: "جاري الترجمة والتحميل..." },
+        en: { contact: "CONTACT", personal: "PERSONAL INFO", birth: "Birth", mili: "Military", about: "SUMMARY", exp: "EXPERIENCE", edu: "EDUCATION", skills: "SKILLS", lang: "LANGUAGES", wait: "Translating & Downloading..." }
     };
 
     function runAI() {
         const job = document.getElementById('inJob').value || "خبير";
-        document.getElementById('inAbout').value = `أنا ${job} طموح أمتلك خبرة واسعة في إدارة العمليات وتطوير الأداء.\nأهتم بتقديم أفضل الحلول والعمل بروح الفريق لتحقيق رؤية الشركة.\nأمتلك مهارات تحليلية قوية وقدرة على اتخاذ القرارات بفعالية.`;
-        document.getElementById('inExp').value = `• العمل كـ ${job} وإدارة المشاريع بنجاح.\n• تطوير سير العمل لزيادة الكفاءة والإنتاجية.\n• تدريب فرق العمل وتقديم الدعم الفني اللازم.`;
-        document.getElementById('inEdu').value = "• بكالوريوس في التخصص ذو الصلة.\n• شهادات معتمدة في مهارات القيادة والإدارة.";
-        document.getElementById('inSkills').value = "القيادة، إدارة الوقت، حل المشكلات، التواصل الفعال";
-        document.getElementById('inLang').value = "العربية (الأم)، الإنجليزية (جيد جداً)";
+        document.getElementById('inAbout').value = `أنا ${job} أتمتع بمهارات قيادية وقدرة على حل المشكلات.\nأسعى للمساهمة في نجاح المؤسسة من خلال خبراتي المتنوعة.`;
+        document.getElementById('inExp').value = `• العمل كـ ${job} لسنوات عديدة.\n• تحقيق أهداف القسم وتطوير الأداء العام.`;
+        document.getElementById('inEdu').value = "• درجة بكالوريوس في التخصص ذو الصلة.\n• شهادات إضافية في مجالات المهارات التقنية.";
+        document.getElementById('inSkills').value = "العمل الجماعي، القيادة، إدارة الوقت";
+        document.getElementById('inLang').value = "العربية، الإنجليزية";
     }
 
-    // محرك الترجمة الأكثر استقراراً
     async function translateText(text, target) {
         if (!text || target === 'ar') return text;
         try {
@@ -145,10 +157,7 @@
             const response = await fetch(url);
             const data = await response.json();
             return data[0].map(item => item[0]).join('');
-        } catch (e) { 
-            console.error("Translation Error");
-            return text; 
-        }
+        } catch { return text; }
     }
 
     async function startProcess(lang) {
@@ -157,15 +166,11 @@
         document.getElementById('loader-msg').innerText = ui.wait;
 
         const ids = ['Name', 'Job', 'About', 'Exp', 'Edu', 'Skills', 'Lang', 'Address', 'Military'];
-        
-        // الترجمة
         for (const id of ids) {
-            const inputVal = document.getElementById('in' + id).value;
-            const translated = await translateText(inputVal, lang);
+            const translated = await translateText(document.getElementById('in' + id).value, lang);
             document.getElementById('out' + id).innerText = translated;
         }
 
-        // تعبئة العناوين الثابتة
         document.getElementById('l-contact').innerText = ui.contact;
         document.getElementById('l-personal').innerText = ui.personal;
         document.getElementById('l-birth').innerText = ui.birth + ":";
@@ -176,12 +181,10 @@
         document.getElementById('l-skills').innerText = ui.skills;
         document.getElementById('l-lang').innerText = ui.lang;
         
-        // بيانات مباشرة
         document.getElementById('outPhone').innerText = document.getElementById('inPhone').value;
         document.getElementById('outEmail').innerText = document.getElementById('inEmail').value;
         document.getElementById('outBirth').innerText = document.getElementById('inBirth').value;
 
-        // الاتجاه
         const wrap = document.getElementById('pdf-render');
         wrap.className = (lang === 'ar') ? 'rtl' : 'ltr';
 
