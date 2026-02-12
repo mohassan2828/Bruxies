@@ -3,185 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cv Forge AI | Full Auto-Translate</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>AI FORGE CV | Pro Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
-        :root { --primary: #0f172a; --accent: #38bdf8; --bg: #f1f5f9; --border: #e2e8f0; }
-        body { margin: 0; background: var(--bg); font-family: 'Cairo', sans-serif; color: #1e293b; }
-        header { padding: 15px 30px; background: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .app-wrapper { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        :root { --accent: #38bdf8; --dark: #0f172a; --gray: #f8fafc; }
+        body { font-family: 'Cairo', sans-serif; background: #e2e8f0; margin: 0; padding-bottom: 50px; }
+        .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .section-title { color: var(--accent); border-bottom: 2px solid #eee; padding-bottom: 5px; margin: 20px 0 15px; font-weight: 900; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
-        label { display: block; font-weight: 700; font-size: 12px; color: #64748b; margin-bottom: 5px; }
-        input, textarea, select { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; outline: none; font-family: inherit; }
-        input:focus { border-color: var(--accent); }
-
-        .dl-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 25px; }
-        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 12px; }
-        .ar { background: #1e293b; } .en { background: #0284c7; } .fr { background: #e11d48; } 
-        .it { background: #16a34a; } .es { background: #ea580c; } .de { background: #4b5563; }
-        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
-
-        /* PDF Styles */
-        #pdf-render { position: absolute; top: -10000px; left: -10000px; width: 210mm; display: flex; background: white; }
-        .pdf-side { width: 75mm; background: #1e293b; color: white; padding: 30px 20px; min-height: 297mm; }
-        .pdf-main { flex: 1; padding: 40px; }
-        .pdf-h { font-size: 18px; font-weight: 900; color: #0f172a; border-left: 4px solid #38bdf8; padding-left: 10px; margin: 25px 0 10px; }
-        .rtl { direction: rtl; } .ltr { direction: ltr; }
-        .ltr .pdf-h { border-left: none; border-right: 4px solid #38bdf8; padding-right: 10px; text-align: left; }
-
-        #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; color: white; flex-direction: column; }
+        .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 20px; }
+        .btn { border: none; padding: 12px; border-radius: 8px; color: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-ar { background: var(--dark); } .btn-en { background: #0284c7; } .btn-fr { background: #e11d48; }
+        
+        /* PDF Preview Styling */
+        #pdf-wrap { position: absolute; top: -10000px; left: -10000px; width: 210mm; min-height: 297mm; display: flex; background: white; }
+        .pdf-side { width: 70mm; background: var(--dark); color: white; padding: 30px 20px; }
+        .pdf-content { flex: 1; padding: 40px; }
+        .pdf-h { font-size: 18px; font-weight: 900; color: var(--dark); border-bottom: 2px solid var(--accent); margin: 20px 0 10px; padding-bottom: 5px; }
+        .rtl { direction: rtl; text-align: right; } .ltr { direction: ltr; text-align: left; }
+        .ltr .pdf-h { border-left: none; }
+        
+        #loader { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-<div id="overlay">
-    <i class="fas fa-spinner fa-spin fa-3x"></i>
-    <h2 id="wait-msg">جاري الترجمة الفورية والتحميل...</h2>
+<div id="loader">
+    <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--accent);"></i>
+    <h3 id="loader-text">جاري المعالجة...</h3>
 </div>
 
-<header>
-    <div style="font-weight:900; font-size:20px;"><i class="fas fa-robot text-accent"></i> CV<span>FORGE</span> AI</div>
-</header>
+<div class="container">
+    <h2 style="text-align: center; color: var(--dark);">AI FORGE CV <i class="fas fa-gem"></i></h2>
+    
+    <div class="section-title">المعلومات الشخصية</div>
+    <div class="grid">
+        <input type="text" id="inName" placeholder="الاسم بالكامل">
+        <input type="text" id="inJob" placeholder="المسمى الوظيفي" oninput="autoFill()">
+        <input type="text" id="inPhone" placeholder="رقم الهاتف">
+        <input type="text" id="inEmail" placeholder="البريد الإلكتروني">
+        <input type="text" id="inAddress" placeholder="العنوان">
+        <input type="text" id="inBirth" placeholder="تاريخ الميلاد">
+        <input type="text" id="inMilitary" placeholder="الموقف من التجنيد">
+        <input type="file" id="inPhoto">
+    </div>
 
-<div class="app-wrapper">
-    <div class="card">
-        <div class="grid">
-            <div><label>الاسم الكامل</label><input type="text" id="inName" class="req"></div>
-            <div><label>المسمى الوظيفي</label><input type="text" id="inJob" class="req" oninput="runAI()"></div>
-            <div><label>سنين الخبرة</label><input type="number" id="inExpYears" oninput="runAI()"></div>
-        </div>
-        <div class="grid">
-            <div><label>الهاتف</label><input type="text" id="inPhone" class="req"></div>
-            <div><label>الإيميل</label><input type="email" id="inEmail" class="req"></div>
-            <div><label>الميلاد</label><input type="text" id="inBirth"></div>
-        </div>
-        <div class="grid">
-            <div><label>العنوان</label><input type="text" id="inAddress"></div>
-            <div><label>الموقف من التجنيد</label><input type="text" id="inMilitary"></div>
-            <div><label>الصورة</label><input type="file" id="inPhoto" accept="image/*"></div>
-        </div>
-        <div><label>النبذة (AI)</label><textarea id="inAbout" rows="4"></textarea></div>
-        <div style="margin-top:10px;"><label>الخبرات (AI)</label><textarea id="inExp" rows="4"></textarea></div>
-        <div class="grid" style="margin-top:10px;">
-            <div><label>المهارات</label><textarea id="inSkills" rows="2"></textarea></div>
-            <div><label>اللغات</label><textarea id="inLang" rows="2"></textarea></div>
-        </div>
+    <div class="section-title">المحتوى والخبرات</div>
+    <textarea id="inAbout" rows="3" placeholder="نبذة عنك"></textarea>
+    <textarea id="inExp" rows="4" placeholder="الخبرات العملية" style="margin-top:10px;"></textarea>
+    <textarea id="inEdu" rows="3" placeholder="التعليم والشهادات" style="margin-top:10px;"></textarea>
 
-        <div class="dl-buttons">
-            <button class="btn ar" onclick="handleDownload('ar')">تحميل بالعربية</button>
-            <button class="btn en" onclick="handleDownload('en')">Download English</button>
-            <button class="btn fr" onclick="handleDownload('fr')">Télécharger FR</button>
-            <button class="btn it" onclick="handleDownload('it')">Scaricare IT</button>
-            <button class="btn es" onclick="handleDownload('es')">Descargar ES</button>
-            <button class="btn de" onclick="handleDownload('de')">Herunterladen DE</button>
-        </div>
+    <div class="section-title">المهارات واللغات (ستظهر في الجزء الأبيض)</div>
+    <div class="grid">
+        <textarea id="inSkills" placeholder="المهارات (مثال: قيادة، برمجة، إدارة)"></textarea>
+        <textarea id="inLang" placeholder="اللغات (مثال: عربية، إنجليزية)"></textarea>
+    </div>
+
+    <div class="dl-grid">
+        <button class="btn btn-ar" onclick="build('ar')">تحميل بالعربية</button>
+        <button class="btn btn-en" onclick="build('en')">English</button>
+        <button class="btn btn-fr" onclick="build('fr')">Français</button>
+        <button class="btn btn-it" onclick="build('it')">Italiano</button>
+        <button class="btn btn-es" onclick="build('es')">Español</button>
+        <button class="btn btn-de" onclick="build('de')">Deutsch</button>
     </div>
 </div>
 
-<div id="pdf-render">
+<div id="pdf-wrap">
     <div class="pdf-side">
-        <div style="width:100px; height:100px; border-radius:15px; border:3px solid #38bdf8; margin:0 auto 20px; overflow:hidden;">
+        <div style="width:120px; height:120px; border-radius:50%; border:4px solid var(--accent); margin:0 auto 20px; overflow:hidden; background:#2d3748;">
             <img id="outPhoto" style="width:100%; height:100%; object-fit:cover;">
         </div>
-        <div id="side-content"></div>
+        <div id="side-data"></div>
     </div>
-    <div class="pdf-main">
-        <h1 id="outName" style="margin:0;"></h1>
-        <h3 id="outJob" style="color:#38bdf8; margin:5px 0 20px;"></h3>
+    <div class="pdf-content">
+        <h1 id="outName" style="margin:0; font-size:35px;"></h1>
+        <h3 id="outJob" style="color:var(--accent); margin-top:5px;"></h3>
+        
         <div class="pdf-h" id="h-about"></div>
-        <div id="outAbout" style="font-size:12px; line-height:1.6; white-space:pre-line;"></div>
+        <div id="outAbout" style="font-size:13px; line-height:1.6;"></div>
+        
         <div class="pdf-h" id="h-exp"></div>
-        <div id="outExp" style="font-size:12px; line-height:1.6; white-space:pre-line;"></div>
+        <div id="outExp" style="font-size:13px; line-height:1.6; white-space:pre-line;"></div>
+
+        <div class="pdf-h" id="h-edu"></div>
+        <div id="outEdu" style="font-size:13px; line-height:1.6; white-space:pre-line;"></div>
+
+        <div class="pdf-h" id="h-skills"></div>
+        <div id="outSkills" style="font-size:13px; line-height:1.6;"></div>
+
+        <div class="pdf-h" id="h-lang"></div>
+        <div id="outLang" style="font-size:13px; line-height:1.6;"></div>
     </div>
 </div>
 
 <script>
-    // ترجمة العناوين الثابتة
-    const ui = {
-        ar: { contact: "تواصل", about: "الملف الشخصي", exp: "الخبرة المهنية", birth: "الميلاد", military: "التجنيد", skills: "المهارات", lang: "اللغات", wait: "جاري الترجمة والتحميل..." },
-        en: { contact: "Contact", about: "Profile Summary", exp: "Experience", birth: "Birth", military: "Military", skills: "Skills", lang: "Languages", wait: "Translating & Downloading..." },
-        fr: { contact: "Contact", about: "Résumé", exp: "Expérience", birth: "Naissance", military: "Service", skills: "Compétences", lang: "Langues", wait: "Traduction en cours..." },
-        it: { contact: "Contatti", about: "Profilo", exp: "Esperienza", birth: "Nascita", military: "Militare", skills: "Abilità", lang: "Lingue", wait: "Traduzione..." },
-        es: { contact: "Contacto", about: "Perfil", exp: "Experiencia", birth: "Nacimiento", military: "Militar", skills: "Habilidades", lang: "Idiomas", wait: "Traduciendo..." },
-        de: { contact: "Kontakt", about: "Profil", exp: "Erfahrung", birth: "Geburt", military: "Militär", skills: "Skills", lang: "Sprachen", wait: "Übersetzung..." }
+    const labels = {
+        ar: { about:"النبذة الشخصية", exp:"الخبرة العملية", edu:"التعليم", skills:"المهارات", lang:"اللغات", contact:"اتصال", birth:"الميلاد", military:"التجنيد", wait:"جاري التحميل..." },
+        en: { about:"Professional Summary", exp:"Work Experience", edu:"Education", skills:"Skills", lang:"Languages", contact:"Contact", birth:"Birth", military:"Military", wait:"Downloading..." }
     };
 
-    function runAI() {
-        const job = document.getElementById('inJob').value || "خبير";
-        const years = document.getElementById('inExpYears').value || "5";
-        document.getElementById('inAbout').value = `أنا ${job} متميز أمتلك خبرة واسعة في تطوير حلول مبتكرة.\nأركز دائماً على تحقيق أعلى مستويات الجودة في العمل.\nلدي مهارات تواصل قوية وقدرة على قيادة فرق العمل.\nأطمح للمساهمة في نجاح مؤسستكم من خلال مهاراتي.\nأؤمن بالتعلم المستمر ومواكبة كل جديد.`;
-        document.getElementById('inExp').value = `• خبرة تزيد عن ${years} سنوات في مجال ${job}.\n• إدارة المشاريع بنجاح وتحقيق أهداف الشركة.\n• تطوير استراتيجيات أدت لتحسين الكفاءة العامة.\n• مهارات متقدمة في حل المشكلات التقنية والإدارية.`;
-        document.getElementById('inSkills').value = "القيادة، إدارة الوقت، حل المشكلات، مهارات تقنية";
-        document.getElementById('inLang').value = "العربية، الإنجليزية";
+    function autoFill() {
+        const job = document.getElementById('inJob').value;
+        if(job.length > 3) {
+            document.getElementById('inAbout').value = `خبير في مجال ${job}، أسعى دائماً لتطوير المهارات وتحقيق الأهداف المرجوة بكفاءة عالية.`;
+            document.getElementById('inExp').value = `• العمل كـ ${job} لعدة سنوات.\n• تطوير استراتيجيات العمل وتحسين الإنتاجية.`;
+            document.getElementById('inSkills').value = `مهارات الـ ${job}، العمل الجماعي، القيادة`;
+        }
     }
 
-    // محرك الترجمة الفورية (API)
-    async function translateText(text, targetLang) {
-        if (!text || targetLang === 'ar') return text;
+    async function translate(text, lang) {
+        if(!text || lang === 'ar') return text;
         try {
-            const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=${targetLang}&dt=t&q=${encodeURI(text)}`);
-            const data = await res.json();
-            return data[0].map(s => s[0]).join('');
+            const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURI(text)}`);
+            const json = await res.json();
+            return json[0].map(s => s[0]).join('');
         } catch { return text; }
     }
 
-    async function handleDownload(lang) {
-        const reqs = document.querySelectorAll('.req');
-        let empty = false;
-        reqs.forEach(r => { if(!r.value) { r.style.borderColor = 'red'; empty = true; } else r.style.borderColor = '#e2e8f0'; });
-        if(empty) return alert("أكمل البيانات أولاً!");
+    async function build(lang) {
+        document.getElementById('loader').style.display = 'flex';
+        const l = labels[lang] || labels['en'];
+        const wrap = document.getElementById('pdf-wrap');
+        wrap.className = (lang === 'ar') ? 'rtl' : 'ltr';
 
-        document.getElementById('overlay').style.display = 'flex';
-        document.getElementById('wait-msg').innerText = ui[lang].wait;
+        // ترجمة وتعبئة
+        document.getElementById('outName').innerText = await translate(document.getElementById('inName').value, lang);
+        document.getElementById('outJob').innerText = await translate(document.getElementById('inJob').value, lang);
+        document.getElementById('outAbout').innerText = await translate(document.getElementById('inAbout').value, lang);
+        document.getElementById('outExp').innerText = await translate(document.getElementById('inExp').value, lang);
+        document.getElementById('outEdu').innerText = await translate(document.getElementById('inEdu').value, lang);
+        document.getElementById('outSkills').innerText = await translate(document.getElementById('inSkills').value, lang);
+        document.getElementById('outLang').innerText = await translate(document.getElementById('inLang').value, lang);
 
-        const target = lang;
-        // ترجمة المحتوى المكتوب
-        const tName = await translateText(document.getElementById('inName').value, target);
-        const tJob = await translateText(document.getElementById('inJob').value, target);
-        const tAbout = await translateText(document.getElementById('inAbout').value, target);
-        const tExp = await translateText(document.getElementById('inExp').value, target);
-        const tAddr = await translateText(document.getElementById('inAddress').value, target);
-        const tMili = await translateText(document.getElementById('inMilitary').value, target);
-        const tSkills = await translateText(document.getElementById('inSkills').value, target);
-        const tLang = await translateText(document.getElementById('inLang').value, target);
+        document.getElementById('h-about').innerText = l.about;
+        document.getElementById('h-exp').innerText = l.exp;
+        document.getElementById('h-edu').innerText = l.edu;
+        document.getElementById('h-skills').innerText = l.skills;
+        document.getElementById('h-lang').innerText = l.lang;
 
-        // تعبئة الـ PDF
-        const pdf = document.getElementById('pdf-render');
-        pdf.className = (lang === 'ar') ? 'rtl' : 'ltr';
-        document.getElementById('outName').innerText = tName;
-        document.getElementById('outJob').innerText = tJob;
-        document.getElementById('outAbout').innerText = tAbout;
-        document.getElementById('outExp').innerText = tExp;
-        document.getElementById('h-about').innerText = ui[lang].about;
-        document.getElementById('h-exp').innerText = ui[lang].exp;
-
-        document.getElementById('side-content').innerHTML = `
-            <div style="color:#38bdf8; font-weight:900; border-bottom:1px solid #444; margin-bottom:10px;">${ui[lang].contact}</div>
-            <div style="font-size:11px; margin-bottom:5px;"><i class="fas fa-phone"></i> ${document.getElementById('inPhone').value}</div>
-            <div style="font-size:11px; margin-bottom:15px;"><i class="fas fa-envelope"></i> ${document.getElementById('inEmail').value}</div>
-            <div style="font-size:11px; margin-bottom:15px;"><b>${ui[lang].birth}:</b> ${document.getElementById('inBirth').value}</div>
-            <div style="font-size:11px; margin-bottom:15px;"><b>${ui[lang].military}:</b> ${tMili}</div>
-            <div style="color:#38bdf8; font-weight:900; border-bottom:1px solid #444; margin:20px 0 10px;">${ui[lang].skills}</div>
-            <div style="font-size:11px; white-space:pre-line;">${tSkills}</div>
-            <div style="color:#38bdf8; font-weight:900; border-bottom:1px solid #444; margin:20px 0 10px;">${ui[lang].lang}</div>
-            <div style="font-size:11px;">${tLang}</div>
+        const mil = await translate(document.getElementById('inMilitary').value, lang);
+        document.getElementById('side-data').innerHTML = `
+            <div style="margin-bottom:15px; border-bottom:1px solid #444; color:var(--accent); font-weight:bold;">${l.contact}</div>
+            <div style="font-size:12px; margin-bottom:5px;">${document.getElementById('inPhone').value}</div>
+            <div style="font-size:12px; margin-bottom:5px;">${document.getElementById('inEmail').value}</div>
+            <div style="font-size:12px; margin-bottom:5px;">${document.getElementById('inAddress').value}</div>
+            <div style="margin-top:15px; font-size:12px;"><b>${l.birth}:</b> ${document.getElementById('inBirth').value}</div>
+            <div style="margin-top:5px; font-size:12px;"><b>${l.military}:</b> ${mil}</div>
         `;
 
         setTimeout(async () => {
-            const canvas = await html2canvas(pdf, { scale: 3 });
+            const canvas = await html2canvas(wrap, { scale: 3, useCORS: true });
             const doc = new jspdf.jsPDF('p', 'mm', 'a4');
             doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
-            doc.save(`CV_${tName}_${lang}.pdf`);
-            document.getElementById('overlay').style.display = 'none';
-        }, 500);
+            doc.save(`CV_${lang}.pdf`);
+            document.getElementById('loader').style.display = 'none';
+        }, 1000);
     }
 
     document.getElementById('inPhoto').onchange = e => {
